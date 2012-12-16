@@ -1,0 +1,19 @@
+# $FreeBSD: src/bin/ed/Makefile,v 1.34.2.1.8.1 2012/03/03 06:15:13 kensmith Exp $
+
+.include <bsd.own.mk>
+
+PROG=	ed
+SRCS=	buf.c cbc.c glbl.c io.c main.c re.c sub.c undo.c
+WARNS?=	2
+LINKS=	${BINDIR}/ed ${BINDIR}/red
+MLINKS=	ed.1 red.1
+
+.if !defined(RELEASE_CRUNCH)
+.if ${MK_OPENSSL} != "no"
+CFLAGS+=-DDES
+DPADD=	${LIBCRYPTO}
+LDADD=	-lcrypto
+.endif
+.endif
+
+.include <bsd.prog.mk>
